@@ -4,8 +4,9 @@ import {
   FiMail,
   FiFacebook,
   FiInstagram,
+  FiTiktok,
 } from "react-icons/fi";
-
+import { AiFillTikTok } from "react-icons/ai";
 export default function TopBar() {
   return (
     <div className="w-full bg-[#1F2937] text-white border-b border-white/10">
@@ -14,15 +15,15 @@ export default function TopBar() {
           <div className="flex items-center gap-2 text-gray-300">
             <FiClock className="w-4 h-4 text-blue-500" />
             <span>
-              Pon - Sob: <span className="text-white">7:00 - 18:00</span>
+              Pon - PT: <span className="text-white">8:00 - 16:00</span>
             </span>
           </div>
           <a
-            href="mailto:kontakt@centex-serwis.pl"
+            href="mailto:warsztat@centex.pl"
             className="hidden md:flex items-center gap-2 text-gray-300 hover:text-blue-400 transition-colors"
           >
             <FiMail className="w-4 h-4 text-blue-500" />
-            <span>kontakt@centex-serwis.pl</span>
+            <span>warsztat@centex.pl</span>
           </a>
         </div>
 
@@ -37,18 +38,27 @@ export default function TopBar() {
 
           <div className="hidden sm:flex items-center gap-3 border-l border-white/10 pl-6">
             <a
-              href="#"
+              href="https://www.facebook.com/profile.php?id=61592659271034"
+
               aria-label="Facebook"
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >
               <FiFacebook className="w-4 h-4" />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/centex_autoserwis"
+
               aria-label="Instagram"
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >
               <FiInstagram className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.tiktok.com/@centex_autoserwis"
+              aria-label="TikTok"
+              className="text-gray-300 hover:text-blue-400 transition-colors"
+            >
+              <AiFillTikTok className="w-4 h-4" />
             </a>
           </div>
         </div>

@@ -1,4 +1,7 @@
+"use client";
 import { FiFacebook, FiInstagram } from "react-icons/fi";
+import { AiFillTikTok } from "react-icons/ai";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -6,7 +9,7 @@ export default function Footer() {
       <div className=" mx-auto px-8 md:px-16 lg:px-30 pt-16 pb-12 grid grid-cols-1 md:grid-cols-[3fr_1fr_1fr_1fr] gap-12 md:gap-8">
         <div>
           <span className="text-xl font-bold block mb-6">
-            Centex <span className="text-blue-500">Serwis</span>
+            Centex Auto <span className="text-blue-500">Serwis</span>
           </span>
           <p className="text-sm text-gray-400 leading-relaxed mb-1">
             ul. Biesiadna 9
@@ -21,10 +24,11 @@ export default function Footer() {
             +48 780 041 548
           </a>
           <a
-            href="mailto:kontakt@centex-serwis.pl"
+            href="mailto:warsztat@centex.pl
+"
             className="text-sm text-gray-300 hover:text-white transition-colors block"
           >
-            kontakt@centex-serwis.pl
+            warsztat@centex.pl
           </a>
         </div>
 
@@ -67,24 +71,36 @@ export default function Footer() {
           </h3>
           <ul className="space-y-3 text-sm text-gray-300">
             <li>
-              <a href="/uslugi" className="hover:text-white transition-colors">
+              <Link
+                href="/uslugi"
+                className="hover:text-white transition-colors"
+              >
                 Diagnostyka komputerowa
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/uslugi" className="hover:text-white transition-colors">
+              <Link
+                href="/uslugi"
+                className="hover:text-white transition-colors"
+              >
                 Naprawy mechaniczne
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/uslugi" className="hover:text-white transition-colors">
+              <Link
+                href="/uslugi"
+                className="hover:text-white transition-colors"
+              >
                 Klimatyzacja
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/uslugi" className="hover:text-white transition-colors">
+              <Link
+                href="/uslugi"
+                className="hover:text-white transition-colors"
+              >
                 Opony i wyważanie
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -107,6 +123,17 @@ export default function Footer() {
                 Polityka prywatności
               </a>
             </li>
+            <li>
+              <button
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(new Event("open-cookie-settings"))
+                }
+                className="hover:text-white transition-colors"
+              >
+                Ustawienia cookies
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -114,9 +141,10 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto px-8 md:px-16 lg:px-30 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400">
           <span>
-            © {new Date().getFullYear()} Centex Serwis. Wszelkie prawa
+            © {new Date().getFullYear()} Centex Auto Serwis. Wszelkie prawa
             zastrzeżone.
           </span>
+
           <a
             href="https://kubaportfolio.vercel.app"
             target="_blank"
@@ -131,24 +159,31 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className=" mx-auto px-8 md:px-16 lg:px-30 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500 leading-relaxed max-w-xl">
-            Centex Serwis to profesjonalny warsztat samochodowy w Rzeszowie.
-            Naprawiamy rzetelnie, szybko i uczciwie — bez zbędnych kosztów i bez
-            ukrytych opłat.
+            Centex Auto Serwis to profesjonalny warsztat samochodowy w
+            Rzeszowie. Naprawiamy rzetelnie, szybko i uczciwie — bez zbędnych
+            kosztów i bez ukrytych opłat.
           </p>
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="#"
+              href="https://www.facebook.com/profile.php?id=61592659271034"
               aria-label="Facebook"
               className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-colors"
             >
               <FiFacebook size={16} />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/centex_autoserwis"
               aria-label="Instagram"
               className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-colors"
             >
               <FiInstagram size={16} />
+            </a>
+            <a
+              href="https://www.tiktok.com/@centex_autoserwis"
+              aria-label="TikTok"
+              className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-colors"
+            >
+              <AiFillTikTok className="w-4 h-4" />
             </a>
           </div>
         </div>

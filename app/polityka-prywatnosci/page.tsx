@@ -1,6 +1,7 @@
 // app/polityka-prywatnosci/page.tsx
 import type { Metadata } from "next";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Polityka prywatności",
@@ -51,10 +52,11 @@ export default function PrivacyPolicyPage() {
                 <br />
                 E-mail:{" "}
                 <a
-                  href="mailto:kontakt@centex-serwis.pl"
+                  href="mailto:warsztat@centex.pl
+"
                   className="text-blue-600 hover:underline"
                 >
-                  kontakt@centex-serwis.pl
+                  warsztat@centex.pl
                 </a>
               </p>
             </div>
@@ -161,10 +163,10 @@ export default function PrivacyPolicyPage() {
                 .
               </p>
               <p>
-                <strong className="text-gray-900">Meta Pixel</strong> (jeśli
-                dotyczy) — narzędzie firmy Meta Platforms, Inc. służące do
-                analizy skuteczności reklam i personalizacji treści reklamowych
-                na Facebooku i Instagramie. Więcej informacji:{" "}
+                <strong className="text-gray-900">Meta Pixel</strong> -
+                narzędzie firmy Meta Platforms, Inc. służące do analizy
+                skuteczności reklam i personalizacji treści reklamowych na
+                Facebooku i Instagramie. Więcej informacji:{" "}
                 <a
                   href="https://www.facebook.com/privacy/policy/"
                   target="_blank"
@@ -215,7 +217,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc list-inside space-y-1 mb-3">
                 <li>Dostępu do swoich danych</li>
                 <li>Sprostowania danych</li>
-                <li>Usunięcia danych ("prawo do bycia zapomnianym")</li>
+                <li>Usunięcia danych `prawo do bycia zapomnianym`</li>
                 <li>Ograniczenia przetwarzania</li>
                 <li>Wniesienia sprzeciwu wobec przetwarzania</li>
                 <li>Przenoszenia danych</li>
@@ -231,10 +233,10 @@ export default function PrivacyPolicyPage() {
               <p>
                 W celu realizacji powyższych praw prosimy o kontakt:{" "}
                 <a
-                  href="mailto:kontakt@centex-serwis.pl"
+                  href="mailto:warsztat@centex.pl"
                   className="text-blue-600 hover:underline"
                 >
-                  kontakt@centex-serwis.pl
+                  warsztat@centex.pl
                 </a>
               </p>
             </div>
@@ -252,6 +254,7 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

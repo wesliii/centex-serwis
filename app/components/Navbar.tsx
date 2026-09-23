@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { HiMenu, HiX } from "react-icons/hi";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "STRONA GŁÓWNA", id: "home" },
@@ -79,15 +80,15 @@ export default function Navbar() {
       <nav
         className={`w-full bg-white shadow-sm transition-all duration-300 z-50 relative ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <div className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-30 py-3 lg:py-4 font-sora">
+        <div className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-30 py-1 lg:py-2 font-sora">
           <div className="flex items-center gap-2">
             <div className="leading-tight">
-              <span className="block text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
-                Centex <span className="text-blue-600">Serwis</span>
-              </span>
-              <span className="hidden sm:block text-xs tracking-widest text-gray-500">
-                WARSZTAT SAMOCHODOWY
-              </span>
+              <Image
+                src={"/mechanikLogo.png"}
+                width={80}
+                height={80}
+                alt="logo"
+              />
             </div>
           </div>
 

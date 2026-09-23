@@ -32,7 +32,7 @@ export default function Hero() {
               </a>
 
               <a
-                href="https://maps.google.com/?q=Rzeszów,+ul.+Biesiadna+9"
+                href="https://maps.google.com/?q=place_id:ChIJN7e84I0bVy8Rsb0PzrVOMp0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 sm:gap-8 bg-white/20 hover:bg-white/30 transition-colors pl-5 sm:pl-7 pr-2 sm:pr-3 py-1.5 sm:py-2 rounded-full"

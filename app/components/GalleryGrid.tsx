@@ -115,6 +115,8 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
               src={selected.image.asset.url}
               alt={selected.image.alt || selected.title}
               fill
+              sizes="(max-width: 800px) 100vw, 800px"
+
               className="object-contain"
             />
           </div>
