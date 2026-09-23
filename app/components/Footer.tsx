@@ -111,11 +111,6 @@ export default function Footer() {
           </h3>
           <ul className="space-y-3 text-sm text-gray-300">
             <li>
-              <a href="/blog" className="hover:text-white transition-colors">
-                Blog
-              </a>
-            </li>
-            <li>
               <a
                 href="/polityka-prywatnosci"
                 className="hover:text-white transition-colors"

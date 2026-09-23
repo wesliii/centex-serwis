@@ -134,7 +134,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc list-inside space-y-1 mb-3">
                 <li>Zapewnienia prawidłowego działania strony</li>
                 <li>Analizy statystyk odwiedzin (Google Analytics)</li>
-                <li>Personalizacji reklam (Meta Pixel, jeśli dotyczy)</li>
+                <li>Personalizacji reklam (Meta Pixel)</li>
               </ul>
               <p>
                 Użytkownik może w każdej chwili zmienić ustawienia dotyczące
