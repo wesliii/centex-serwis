@@ -4,9 +4,8 @@ import {
   FiMail,
   FiFacebook,
   FiInstagram,
-  FiTiktok,
 } from "react-icons/fi";
-import { AiFillTikTok } from "react-icons/ai";
+import { SiTiktok } from "react-icons/si";
 export default function TopBar() {
   return (
     <div className="w-full bg-[#1F2937] text-white border-b border-white/10">
@@ -58,7 +57,7 @@ export default function TopBar() {
               aria-label="TikTok"
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >
-              <AiFillTikTok className="w-4 h-4" />
+              <SiTiktok className="w-4 h-4" />
             </a>
           </div>
         </div>
