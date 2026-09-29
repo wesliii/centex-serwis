@@ -4,7 +4,7 @@ export default function Hero() {
     <div className="relative h-screen flex flex-col font-sora">
       <div className="relative flex-1 bg-[url('/tlomechanik.png')] bg-cover lg:bg-center bg-[65%_center]  lg:mr-0 min-h-0 ">
         <div className=" absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.55)_35%,_rgba(0,0,0,0.15)_65%,_transparent_100%)]" />
-        <div className=" relative w-full lg:w-[55%] h-full flex justify-center items-end lg:items-center pb-12 lg:pb-0 flex-col text-left px-8 lg:px-30">
+        <div className=" relative w-full w-[60%] sm:w-[60%] h-full flex justify-center items-end lg:items-center pb-12 lg:pb-0 flex-col text-left px-8 lg:px-30">
           <div className="w-full ">
             <h1 className="text-3xl md:text-5xl  text-white mb-4 leading-tight ">
               Awaria w Rzeszowie? Jesteśmy tu, żeby pomóc - szybko, uczciwie i

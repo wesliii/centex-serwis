@@ -9,7 +9,7 @@ export default function About() {
         <div className="grid grid-cols-2 gap-4 order-1 md:order-none">
           <div className="relative w-full h-[280px] md:h-[520px] rounded-l-lg overflow-hidden">
             <Image
-              src="/aboutpion1.jpg"
+              src="/zdj2.jpg"
               alt="Mechanik podczas naprawy silnika w warsztacie Centex Serwis"
               fill
               sizes="(max-width: 768px) 50vw, 25vw"

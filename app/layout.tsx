@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import "./globals.css";
 import JsonLd from "./components/JsonLd";
-import CookieConsent from "./components/Cookies";
-import MetaPixel from "./components/MetaPixel";
-import GoogleTagManagerScript from "./components/GoogleTagManager";
+import Cookies from "./components/Cookies";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -51,35 +50,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pl"
       className={`${sora.variable} ${inter.variable} h-full antialiased`}
     >
-      <head>
-        <Script id="google-consent-mode" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-
-            try {
-              var savedConsent = localStorage.getItem('centex-cookie-consent-v1');
-              var isGranted = savedConsent === 'all' ? 'granted' : 'denied';
-
-              gtag('consent', 'default', {
-                'analytics_storage': isGranted,
-                'ad_storage': isGranted,
-                'ad_user_data': isGranted,
-                'ad_personalization': isGranted
-              });
-            } catch (e) {
-              console.error(e);
-            }
-          `}
-        </Script>
-
-        <GoogleTagManagerScript />
-      </head>
       <body className="min-h-full flex flex-col">
+        <Script id="consent-default" strategy="beforeInteractive">
+          {`
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(['consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied'
+}]);
+  `}
+        </Script>
         <JsonLd />
+        <GoogleTagManager gtmId="GTM-TLRQFHPQ" />
         {children}
-        <CookieConsent />
-        <MetaPixel />
+        <Cookies />
       </body>
     </html>
   );

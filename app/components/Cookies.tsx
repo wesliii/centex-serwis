@@ -1,49 +1,92 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "centex-cookie-consent-v1";
+const CONSENT_KEY = "cookie_consent";
+const CONSENT_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
 
-type Consent = "all" | "necessary";
+type ConsentValue = "granted" | "denied";
 
-export default function CookieConsent() {
-  const [isVisible, setIsVisible] = useState(false);
+function readConsent(): ConsentValue | null {
+  try {
+    const raw = localStorage.getItem(CONSENT_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    const isValidValue =
+      parsed?.value === "granted" || parsed?.value === "denied";
+    const isFresh =
+      typeof parsed?.timestamp === "number" &&
+      Date.now() - parsed.timestamp < CONSENT_MAX_AGE_MS;
+
+    if (isValidValue && isFresh) {
+      return parsed.value;
+    }
+
+    localStorage.removeItem(CONSENT_KEY);
+    return null;
+  } catch {
+    localStorage.removeItem(CONSENT_KEY);
+    return null;
+  }
+}
+
+function saveConsent(value: ConsentValue) {
+  localStorage.setItem(
+    CONSENT_KEY,
+    JSON.stringify({ value, timestamp: Date.now() }),
+  );
+}
+
+function sendConsentToGtm(value: ConsentValue) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push([
+    "consent",
+    "update",
+    {
+      analytics_storage: value,
+      ad_storage: value,
+      ad_user_data: value,
+      ad_personalization: value,
+    },
+  ]);
+
+  if (value === "granted") {
+    window.dataLayer.push({ event: "consent_granted" });
+  }
+}
+
+export default function Cookies() {
+  const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    const consent = window.localStorage.getItem(STORAGE_KEY);
-    if (!consent) {
-      setIsVisible(true);
-    }
+    const stored = readConsent();
 
-    const openSettings = () => setIsVisible(true);
-    window.addEventListener("open-cookie-settings", openSettings);
-    return () =>
-      window.removeEventListener("open-cookie-settings", openSettings);
+    if (stored === null) {
+      setShowBanner(true);
+    } else {
+      sendConsentToGtm(stored);
+    }
   }, []);
 
-  function saveConsent(value: Consent) {
-    window.localStorage.setItem(STORAGE_KEY, value);
-    setIsVisible(false);
+  useEffect(() => {
+    const handleOpenSettings = () => setShowBanner(true);
 
-    if (typeof window !== "undefined" && (window as any).gtag) {
-      const isGranted = value === "all" ? "granted" : "denied";
-      (window as any).gtag("consent", "update", {
-        analytics_storage: isGranted,
-        ad_storage: isGranted,
-        ad_user_data: isGranted,
-        ad_personalization: isGranted,
-      });
-    }
+    window.addEventListener("open-cookie-settings", handleOpenSettings);
+    return () => {
+      window.removeEventListener("open-cookie-settings", handleOpenSettings);
+    };
+  }, []);
 
-    window.dispatchEvent(
-      new CustomEvent("cookie-consent-changed", {
-        detail: { consent: value },
-      }),
-    );
+  const handleChoice = (value: ConsentValue) => {
+    saveConsent(value);
+    sendConsentToGtm(value);
+    setShowBanner(false);
+  };
+
+  if (!showBanner) {
+    return null;
   }
-
-  if (!isVisible) return null;
 
   return (
     <section
@@ -77,18 +120,18 @@ export default function CookieConsent() {
         <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
           <button
             type="button"
-            onClick={() => saveConsent("necessary")}
+            onClick={() => handleChoice("denied")}
             className="min-h-12 rounded-full border border-white/25 px-6 text-sm font-bold transition hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            Tylko niezbędne
+            Odrzuć
           </button>
 
           <button
             type="button"
-            onClick={() => saveConsent("all")}
+            onClick={() => handleChoice("granted")}
             className="min-h-12 rounded-full bg-red-500 px-6 text-sm font-bold transition hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
           >
-            Akceptuję wszystkie
+            Akceptuj
           </button>
         </div>
       </div>

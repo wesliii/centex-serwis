@@ -80,24 +80,23 @@ export default function Navbar() {
       <nav
         className={`w-full bg-white shadow-sm transition-all duration-300 z-50 relative ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <div className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-30 py-1 lg:py-2 font-sora">
-          <div className="flex items-center gap-2">
-            <div className="leading-tight">
-              <Image
-                src={"/mechanikLogo.png"}
-                width={80}
-                height={80}
-                alt="logo"
-              />
-            </div>
+        <div className="mx-auto flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 xl:px-30 py-1 lg:py-2 font-sora">
+          <div className="flex items-center gap-2 shrink-0">
+            <Image
+              src={"/mechanikLogo.png"}
+              width={80}
+              height={80}
+              alt="logo"
+              className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20"
+            />
           </div>
 
-          <ul className="hidden lg:flex items-center gap-8 font-semibold text-md text-gray-800">
+          <ul className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-sm xl:text-md text-gray-800">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className={`transition-colors ${
+                  className={`transition-colors whitespace-nowrap ${
                     activeSection === link.id
                       ? "text-blue-600"
                       : "hover:text-blue-600"
@@ -108,12 +107,11 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-
           <a
             href="tel:+48780041548"
-            className="hidden lg:flex items-center gap-5 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-sm pl-6 pr-2 py-2 rounded-full"
+            className="hidden lg:flex items-center gap-3 xl:gap-5 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-sm pl-5 xl:pl-6 pr-2 py-2 rounded-full shrink-0"
           >
-            <span>UMÓW WIZYTĘ</span>
+            <span className="whitespace-nowrap">UMÓW WIZYTĘ</span>
             <div className="bg-white rounded-full flex items-center justify-center w-8 h-8 shrink-0">
               <MdArrowForwardIos size={16} color="black" />
             </div>
@@ -121,7 +119,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-900"
+            className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-900 shrink-0"
             aria-label="Menu"
           >
             {isMenuOpen ? <HiX size={26} /> : <HiMenu size={26} />}
@@ -141,7 +139,7 @@ export default function Navbar() {
           isMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-100">
           <span className="text-lg font-bold text-gray-900">
             Centex <span className="text-blue-600">Serwis</span>
           </span>
@@ -154,7 +152,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <ul className="flex flex-col px-6 py-2 font-semibold text-base text-gray-800">
+        <ul className="flex flex-col px-5 sm:px-6 py-2 font-semibold text-base text-gray-800">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
@@ -170,11 +168,11 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="px-6 py-6 flex">
+        <div className="px-5 sm:px-6 py-6 flex">
           <a
             href="tel:+48780041548"
             onClick={() => setIsMenuOpen(false)}
-            className="flex items-center justify-between gap-3 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-base px-4 py-3.5 rounded-full"
+            className="flex items-center justify-between gap-3 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-base px-4 py-3.5 rounded-full w-full"
           >
             <span>UMÓW WIZYTĘ</span>
             <div className="bg-white rounded-full flex items-center justify-center w-8 h-8 shrink-0">
