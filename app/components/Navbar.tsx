@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { MdArrowForwardIos } from "react-icons/md";
 import { HiMenu, HiX } from "react-icons/hi";
 import Image from "next/image";
@@ -81,7 +82,7 @@ export default function Navbar() {
         className={`w-full bg-white shadow-sm transition-all duration-300 z-50 relative ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="mx-auto flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 xl:px-30 py-1 lg:py-2 font-sora">
-          <div className="flex items-center gap-2 shrink-0">
+          <Link className="flex items-center gap-2 shrink-0" href="/">
             <Image
               src={"/mechanikLogo.png"}
               width={80}
@@ -89,12 +90,12 @@ export default function Navbar() {
               alt="logo"
               className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20"
             />
-          </div>
+          </Link>
 
           <ul className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-sm xl:text-md text-gray-800">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   className={`transition-colors whitespace-nowrap ${
                     activeSection === link.id
@@ -103,12 +104,12 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
           <a
-            href="tel:+48780041548"
+            href="tel:+48518032252"
             className="hidden lg:flex items-center gap-3 xl:gap-5 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-sm pl-5 xl:pl-6 pr-2 py-2 rounded-full shrink-0"
           >
             <span className="whitespace-nowrap">UMÓW WIZYTĘ</span>
@@ -170,7 +171,7 @@ export default function Navbar() {
 
         <div className="px-5 sm:px-6 py-6 flex">
           <a
-            href="tel:+48780041548"
+            href="tel:+48518032252"
             onClick={() => setIsMenuOpen(false)}
             className="flex items-center justify-between gap-3 bg-red-500 hover:bg-red-700 transition-colors text-white font-semibold text-base px-4 py-3.5 rounded-full w-full"
           >

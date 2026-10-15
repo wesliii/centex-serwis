@@ -6,13 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "vite build",
+    "start:vinext": "vite preview",
+    "deploy:vinext": "vinext-cloudflare deploy",
+    "deploy:response-store": "cf deploy --prebuilt --mode production --worker centex-serwis-response-store"
   },
   "dependencies": {
+    "@cloudflare/workers-response-store": "^1.0.0",
     "@next/third-parties": "^16.3.6",
     "@portabletext/react": "^8.0.1",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.2",
+    "@vinext/cloudflare": "^1.0.0",
     "@vis.gl/react-google-maps": "^1.10.0",
     "client-only": "^0.0.1",
     "google-map-react": "^2.2.5",
@@ -24,20 +31,29 @@
     "react-email": "^6.11.0",
     "react-icons": "^5.7.0",
     "react-leaflet": "^5.0.0",
+    "react-server-dom-webpack": "^19.2.8",
     "resend": "^6.30.0",
     "sanity": "^5.31.2",
-    "styled-components": "^6.5.3"
+    "styled-components": "^6.5.3",
+    "vinext": "^1.0.0"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.sha-ad79608dd",
     "@tailwindcss/postcss": "^4",
     "@types/gtag.js": "^0.0.20",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-rsc": "^0.5.35",
+    "cf": "^1.0.0-beta.5",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "typescript": "^5",
+    "vite": "^8.3.0",
+    "wrangler": "^4.147.0"
+  },
+  "type": "module"
 }

@@ -41,13 +41,13 @@ export default function About() {
 
           <p className="text-base md:text-lg text-gray-700 leading-relaxed">
             Chcemy być warsztatem, do którego wraca się z zaufaniem, a nie z
-            konieczności. Naprawiamy samochody rzetelnie, szybko i uczciwie —
+            konieczności. Naprawiamy samochody rzetelnie, szybko i uczciwie -
             bez kombinowania, bez naciągania na niepotrzebne naprawy.
           </p>
 
           <p className="text-base md:text-lg text-gray-700 leading-relaxed mt-4">
             Zależy nam na tym, żeby każdy klient czuł się w naszym warsztacie
-            zaopiekowany — dokładnie wiedział, co i dlaczego naprawiamy, i mógł
+            zaopiekowany - dokładnie wiedział, co i dlaczego naprawiamy, i mógł
             nam po prostu zaufać. To dla nas ważniejsze niż liczba lat na
             szyldzie.
           </p>

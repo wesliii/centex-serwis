@@ -8,7 +8,7 @@ export default function TrustBar() {
         <div className="flex items-center gap-4 justify-center">
           <IoPricetagsOutline size={40} />
           <div>
-            <h3 className="font-bold uppercase  mb-1">Najlepsze ceny</h3>
+            <h3 className="font-bold uppercase  mb-1">Uczciwe ceny</h3>
             <p className="text-white/90 text-sm">
               Wszystkie naprawy mechaniczne w przystępnych cenach
             </p>

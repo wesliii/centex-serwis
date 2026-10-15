@@ -14,7 +14,7 @@ export default function TopBar() {
           <div className="flex items-center gap-2 text-gray-300">
             <FiClock className="w-4 h-4 text-blue-500" />
             <span>
-              Pon - PT: <span className="text-white">8:00 - 16:00</span>
+              Pon-PT: <span className="text-white">9:00 - 17:00</span>
             </span>
           </div>
           <a
@@ -28,11 +28,11 @@ export default function TopBar() {
 
         <div className="flex items-center gap-6">
           <a
-            href="tel:+48780041548"
+            href="tel:+48518032252"
             className="flex items-center gap-2 font-semibold hover:text-blue-400 transition-colors"
           >
             <FiPhone className="w-4 h-4 text-blue-500" />
-            <span>780 041 548</span>
+            <span>518 032 252</span>
           </a>
 
           <div className="hidden sm:flex items-center gap-3 border-l border-white/10 pl-6">

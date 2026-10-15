@@ -1,12 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiFacebook, FiInstagram } from "react-icons/fi";
 import { AiFillTikTok } from "react-icons/ai";
 import { MdArrowForwardIos } from "react-icons/md";
 import Link from "next/link";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, options: Record<string, unknown>) => string;
+      reset: (widgetId?: string) => void;
+      remove: (widgetId?: string) => void;
+    };
+  }
+}
+
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const TURNSTILE_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+// Skrypt Turnstile ladujemy dopiero, gdy uzytkownik kliknie w formularz,
+// zeby nie spowalniac kazdej podstrony.
+function loadTurnstile(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (window.turnstile) {
+      resolve();
+      return;
+    }
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${TURNSTILE_SRC}"]`,
+    );
+    if (existing) {
+      existing.addEventListener("load", () => resolve());
+      existing.addEventListener("error", () => reject(new Error("turnstile")));
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = TURNSTILE_SRC;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("turnstile"));
+    document.head.appendChild(script);
+  });
+}
 
 const inputClass =
   "w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-gray-500 transition-colors focus:border-blue-500 focus:outline-none";
@@ -17,9 +57,76 @@ export default function Footer() {
   const [website, setWebsite] = useState(""); // honeypot
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [token, setToken] = useState("");
+  const [widgetRequested, setWidgetRequested] = useState(false);
+
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!widgetRequested || !SITE_KEY || !widgetRef.current) return;
+    let cancelled = false;
+
+    loadTurnstile()
+      .then(() => {
+        if (
+          cancelled ||
+          !widgetRef.current ||
+          !window.turnstile ||
+          widgetIdRef.current
+        ) {
+          return;
+        }
+        widgetIdRef.current = window.turnstile.render(widgetRef.current, {
+          sitekey: SITE_KEY,
+          theme: "dark",
+          size: "flexible",
+          appearance: "interaction-only",
+          language: "pl",
+          callback: (value: string) => setToken(value),
+          "expired-callback": () => setToken(""),
+          "error-callback": () => setToken(""),
+        });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setErrorMsg(
+            "Nie udało się załadować zabezpieczenia. Odśwież stronę.",
+          );
+          setStatus("error");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [widgetRequested]);
+
+  useEffect(() => {
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+      }
+      widgetIdRef.current = null;
+    };
+  }, []);
+
+  const resetWidget = () => {
+    setToken("");
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (SITE_KEY && !token) {
+      setErrorMsg("Poczekaj chwilę na weryfikację zabezpieczenia.");
+      setStatus("error");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
 
@@ -27,7 +134,12 @@ export default function Footer() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, message: wiadomosc, website }),
+        body: JSON.stringify({
+          email,
+          message: wiadomosc,
+          website,
+          turnstileToken: token,
+        }),
       });
 
       const data = await res.json();
@@ -37,21 +149,26 @@ export default function Footer() {
           typeof data.error === "string" ? data.error : "Coś poszło nie tak.",
         );
         setStatus("error");
+        resetWidget();
         return;
       }
 
       setStatus("success");
       setEmail("");
       setWiadomosc("");
+      resetWidget();
     } catch {
       setErrorMsg("Brak połączenia. Sprawdź internet i spróbuj ponownie.");
       setStatus("error");
+      resetWidget();
     }
   };
 
+  const submitDisabled = status === "loading" || (!!SITE_KEY && !token);
+
   return (
     <footer className="bg-[#1F2937] text-white font-sora">
-      <div className="mx-auto px-8 md:px-16 lg:px-30 pt-16 pb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.4fr] gap-12 lg:gap-10">
+      <div className="mx-auto  px-6 sm:px-8 lg:px-30 pt-16 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_1fr_1.5fr] gap-10 lg:gap-14">
         <div>
           <span className="text-xl font-bold block mb-6">
             Centex Auto <span className="text-blue-500">Serwis</span>
@@ -63,10 +180,10 @@ export default function Footer() {
             35-304 Rzeszów
           </p>
           <a
-            href="tel:+48780041548"
+            href="tel:+48518032252"
             className="text-sm text-gray-300 hover:text-white transition-colors block mb-1"
           >
-            +48 780 041 548
+            +48 518 032 252
           </a>
           <a
             href="mailto:warsztat@centex.pl"
@@ -77,7 +194,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold tracking-wide text-gray-500 mb-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-5">
             Strony
           </h3>
           <ul className="space-y-3 text-sm text-gray-300">
@@ -111,13 +228,13 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold tracking-wide text-gray-500 mb-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-5">
             Usługi
           </h3>
           <ul className="space-y-3 text-sm text-gray-300">
             <li>
               <Link
-                href="/uslugi"
+                href="/uslugi/diagnostyka-komputerowa"
                 className="hover:text-white transition-colors"
               >
                 Diagnostyka komputerowa
@@ -125,7 +242,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/uslugi"
+                href="/uslugi/naprawy-mechaniczne"
                 className="hover:text-white transition-colors"
               >
                 Naprawy mechaniczne
@@ -133,7 +250,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/uslugi"
+                href="/uslugi/klimatyzacja"
                 className="hover:text-white transition-colors"
               >
                 Klimatyzacja
@@ -141,7 +258,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/uslugi"
+                href="/uslugi/opony-i-wyważanie"
                 className="hover:text-white transition-colors"
               >
                 Opony i wyważanie
@@ -151,12 +268,13 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold tracking-wide text-gray-500 mb-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-5">
             Napisz do nas
           </h3>
 
           <form
             onSubmit={handleSubmit}
+            onFocus={() => setWidgetRequested(true)}
             className="flex flex-col gap-3"
             aria-label="Formularz kontaktowy"
           >
@@ -189,9 +307,9 @@ export default function Footer() {
                 required
                 minLength={10}
                 maxLength={3000}
-                rows={2}
+                rows={4}
                 placeholder="W czym możemy pomóc?"
-                className={`${inputClass} resize-none pb-10`}
+                className={`${inputClass} resize-none`}
               />
             </div>
 
@@ -207,9 +325,11 @@ export default function Footer() {
               />
             </div>
 
+            {SITE_KEY && <div ref={widgetRef} />}
+
             <button
               type="submit"
-              disabled={status === "loading"}
+              disabled={submitDisabled}
               className="flex items-center justify-between rounded-full bg-blue-600 py-1.5 pl-5 pr-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span>{status === "loading" ? "Wysyłanie..." : "Wyślij"}</span>
@@ -244,7 +364,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto px-8 md:px-16 lg:px-30 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-gray-400">
+        <div className="mx-auto  px-6 sm:px-8 lg:px-30 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-gray-400">
           <span>
             © {new Date().getFullYear()} Centex Auto Serwis. Wszelkie prawa
             zastrzeżone.
@@ -285,7 +405,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto px-8 md:px-16 lg:px-30 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mx-auto px-6 sm:px-8 lg:px-30 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500 leading-relaxed max-w-xl">
             Centex Auto Serwis to profesjonalny warsztat samochodowy w
             Rzeszowie. Naprawiamy rzetelnie, szybko i uczciwie — bez zbędnych

@@ -38,18 +38,18 @@ function saveConsent(value: ConsentValue) {
   );
 }
 
-function sendConsentToGtm(value: ConsentValue) {
+function gtag(..._args: unknown[]) {
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push([
-    "consent",
-    "update",
-    {
-      analytics_storage: value,
-      ad_storage: value,
-      ad_user_data: value,
-      ad_personalization: value,
-    },
-  ]);
+  window.dataLayer.push(arguments);
+}
+
+function sendConsentToGtm(value: ConsentValue) {
+  gtag("consent", "update", {
+    analytics_storage: value,
+    ad_storage: value,
+    ad_user_data: value,
+    ad_personalization: value,
+  });
 
   if (value === "granted") {
     window.dataLayer.push({ event: "consent_granted" });

@@ -22,19 +22,19 @@ export default function Location() {
               <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <MdAccessTime size={18} className="text-red-600" />
               </div>
-              <p className="text-base">Pon–Sob, 7:00–18:00</p>
+              <p className="text-base">Pon-PT, 9:00 - 17:00</p>
             </div>
             <div className="flex items-center gap-4 text-gray-600">
               <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <MdPhone size={18} className="text-red-600" />
               </div>
-              <p className="text-base">+48 780 041 548</p>
+              <p className="text-base">518 032 252</p>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="tel:+48780041548"
+              href="tel:+48518032252"
               className="flex items-center justify-between gap-4 bg-red-600 hover:bg-red-700 transition-colors text-white font-semibold pl-6 pr-2 py-2 rounded-full"
             >
               <span>Zadzwoń teraz</span>
@@ -43,7 +43,7 @@ export default function Location() {
               </div>
             </a>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=Rzeszów,+Biesiadna+9"
+              href="https://www.google.com/maps/search/?api=1&query=Centex%20Auto%20Serwis%20Rzesz%C3%B3w&query_place_id=ChIJN7e84I0bVy8Rsb0PzrVOMp0"
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-between gap-4 bg-blue-900 hover:bg-blue-950 transition-colors text-white font-semibold pl-6 pr-2 py-2 rounded-full"

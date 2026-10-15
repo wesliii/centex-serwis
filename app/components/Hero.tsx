@@ -13,11 +13,11 @@ export default function Hero() {
 
             <div className="flex gap-3 sm:gap-4 flex-wrap pt-5">
               <a
-                href="tel:+48780041548"
+                href="tel:+48518032252"
                 className="flex items-center text-base sm:text-lg md:text-xl gap-4 sm:gap-10 bg-white hover:bg-gray-100 transition-colors text-black font-semibold pl-5 sm:pl-7 pr-2 sm:pr-3 py-1.5 sm:py-2 rounded-full"
               >
                 <span>Zadzwoń teraz</span>
-                <div className="bg-red-600 rounded-full flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 shrink-0">
+                <div className="bg-red-600 rounded-full flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 shrink-0">
                   <MdArrowForwardIos
                     size={16}
                     className="sm:hidden"
@@ -32,7 +32,7 @@ export default function Hero() {
               </a>
 
               <a
-                href="https://maps.google.com/?q=place_id:ChIJN7e84I0bVy8Rsb0PzrVOMp0"
+                href="https://www.google.com/maps/search/?api=1&query=Centex%20Auto%20Serwis%20Rzesz%C3%B3w&query_place_id=ChIJN7e84I0bVy8Rsb0PzrVOMp0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 sm:gap-8 bg-white/20 hover:bg-white/30 transition-colors pl-5 sm:pl-7 pr-2 sm:pr-3 py-1.5 sm:py-2 rounded-full"

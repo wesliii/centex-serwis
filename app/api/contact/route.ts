@@ -1,14 +1,27 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const DEFAULT_FROM = "Formularz Centex <onboarding@resend.dev>";
+
+async function verifyTurnstile(token: string, secret: string, ip?: string) {
+  const body = new URLSearchParams({ secret, response: token });
+  if (ip) body.set("remoteip", ip);
+
+  const res = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    { method: "POST", body },
+  );
+  const data = (await res.json()) as { success?: boolean };
+  return data.success === true;
+}
 
 export async function POST(req: Request) {
   try {
-    const { email, message, website } = await req.json();
+    const { email, message, website, turnstileToken } = await req.json();
 
+    // Honeypot
     if (website) {
       return NextResponse.json({ ok: true });
     }
@@ -35,10 +48,13 @@ export async function POST(req: Request) {
       );
     }
 
+    const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.CONTACT_TO_EMAIL;
-    if (!process.env.RESEND_API_KEY || !to) {
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+
+    if (!apiKey || !to || !turnstileSecret) {
       console.error(
-        "Brak RESEND_API_KEY lub CONTACT_TO_EMAIL w zmiennych środowiskowych.",
+        "Brak RESEND_API_KEY, CONTACT_TO_EMAIL lub TURNSTILE_SECRET_KEY w zmiennych środowiskowych.",
       );
       return NextResponse.json(
         { error: "Formularz jest chwilowo niedostępny. Zadzwoń do nas." },
@@ -46,8 +62,30 @@ export async function POST(req: Request) {
       );
     }
 
+    if (typeof turnstileToken !== "string" || !turnstileToken) {
+      return NextResponse.json(
+        { error: "Potwierdź, że nie jesteś robotem." },
+        { status: 400 },
+      );
+    }
+
+    const ip = req.headers.get("CF-Connecting-IP") ?? undefined;
+    const human = await verifyTurnstile(turnstileToken, turnstileSecret, ip);
+    if (!human) {
+      return NextResponse.json(
+        {
+          error:
+            "Weryfikacja nie powiodła się. Odśwież stronę i spróbuj ponownie.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const resend = new Resend(apiKey);
+    const from = process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM;
+
     const { error } = await resend.emails.send({
-      from: "Formularz Centex <onboarding@resend.dev>",
+      from,
       to,
       replyTo: email,
       subject: `Nowa wiadomość ze strony od ${email}`,

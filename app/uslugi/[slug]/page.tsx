@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { cache } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,9 +16,65 @@ import { FiCheckCircle, FiPhoneCall } from "react-icons/fi";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
+// Jedno zapytanie do Sanity wspolne dla generateMetadata i strony
+const getService = cache((slug: string) =>
+  client.fetch(servicePageQuery, { slug }),
+);
+
+function shorten(text: string, max = 155) {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
 export async function generateStaticParams() {
   const slugs: { slug: string }[] = await client.fetch(serviceSlugsQuery);
   return slugs.map((s) => ({ slug: s.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await getService(slug);
+
+  if (!service) return {};
+
+  const title = `${service.title} Rzeszów`;
+  const description = service.fullDescription
+    ? shorten(service.fullDescription)
+    : `${service.title} w Centex Auto Serwis w Rzeszowie. Zadzwoń i umów wizytę w warsztacie.`;
+  const path = `/uslugi/${slug}`;
+  const imageUrl = service.image?.asset?.url
+    ? `${service.image.asset.url}?w=1200&h=630&fit=crop&auto=format&q=75`
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title: `${title} | Centex Auto Serwis`,
+      description,
+      url: path,
+      type: "website",
+      locale: "pl_PL",
+      siteName: "Centex Auto Serwis",
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+              alt: service.image?.alt || service.title,
+            },
+          ]
+        : undefined,
+    },
+  };
 }
 
 interface OtherService {
@@ -31,7 +89,7 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = await client.fetch(servicePageQuery, { slug });
+  const service = await getService(slug);
 
   if (!service) {
     notFound();
@@ -47,17 +105,15 @@ export default async function ServicePage({
       </div>
 
       <div className="px-6 md:px-16 lg:px-30 pt-8">
-        <nav className="max-w-7xl mx-auto text-sm text-gray-500 flex items-center gap-2">
+        <nav
+          aria-label="Okruszki"
+          className="max-w-7xl mx-auto text-sm text-gray-500 flex items-center gap-2"
+        >
           <Link href="/" className="hover:text-blue-600 transition-colors">
             Strona główna
           </Link>
           <span>/</span>
-          <Link
-            href="/uslugi"
-            className="hover:text-blue-600 transition-colors"
-          >
-            Usługi
-          </Link>
+          <span>Usługi</span>
           <span>/</span>
           <span className="text-gray-900">{service.title}</span>
         </nav>
@@ -68,9 +124,10 @@ export default async function ServicePage({
           <article className="lg:col-span-2">
             <div className="relative w-full h-[300px] md:h-[420px] rounded-lg overflow-hidden mb-8 border border-gray-100">
               <Image
-                src={service.image.asset.url}
+                src={`${service.image.asset.url}?w=1400&auto=format&q=75`}
                 alt={service.image.alt || service.title}
                 fill
+                sizes="(min-width: 1024px) 66vw, 100vw"
                 className="object-cover"
                 priority
               />
@@ -118,13 +175,13 @@ export default async function ServicePage({
                 <span>Umów wizytę</span>
               </a>
 
-              <a
-                href="/kontakt"
+              <Link
+                href="/#contact"
                 className="w-full inline-flex items-center justify-center gap-2 border border-gray-300 hover:border-blue-600 hover:text-blue-600 transition-colors font-semibold px-6 py-3 rounded-full text-sm text-gray-700"
               >
                 Formularz kontaktowy
                 <MdArrowForwardIos size={12} />
-              </a>
+              </Link>
             </div>
           </aside>
         </div>

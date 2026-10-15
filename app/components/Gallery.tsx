@@ -17,7 +17,7 @@ export default function Gallery() {
             </h2>
 
             <p className="text-white/90 text-lg mb-8 max-w-xl">
-              Rzetelność i precyzja w każdym calu — przejrzyj zdjęcia z naszego
+              Rzetelność i precyzja w każdym calu - przejrzyj zdjęcia z naszego
               warsztatu i zobacz, jak wygląda nasza codzienna praca.
             </p>
 

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import TopBar from "./components/TopBar";
@@ -10,9 +9,13 @@ import Location from "./components/Location";
 import FAQ from "./components/Faq";
 import Opinions from "./components/Opinions";
 import Footer from "./components/Footer";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 export default function Home() {
   return (
-    <div className="m-0 scroll-smooth ">
+    <>
       <TopBar />
       <div className="sticky top-0 z-50">
         <Navbar />
@@ -36,6 +39,6 @@ export default function Home() {
       <section id="contact">
         <Footer />
       </section>
-    </div>
+    </>
   );
 }

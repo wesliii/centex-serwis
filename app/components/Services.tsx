@@ -1,5 +1,5 @@
-// components/Services.tsx
 import Image from "next/image";
+import Link from "next/link";
 import {
   FiTool,
   FiDroplet,
@@ -61,6 +61,8 @@ interface Service {
   icon: keyof typeof icons;
 }
 
+const cardImage = (url: string) => `${url}?w=800&auto=format&q=75`;
+
 export default async function Services() {
   const services: Service[] = await client.fetch(servicesListQuery);
 
@@ -89,9 +91,10 @@ export default async function Services() {
               >
                 <div className="relative w-full h-[280px]">
                   <Image
-                    src={service.image.asset.url}
+                    src={cardImage(service.image.asset.url)}
                     alt={service.image.alt || service.title}
                     fill
+                    loading="lazy"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover"
                   />
@@ -110,13 +113,14 @@ export default async function Services() {
                   <p className="text-gray-600 group-hover:text-white/90 text-sm leading-relaxed mb-4 transition-colors duration-300">
                     {service.description}
                   </p>
-                  <a
+                  <Link
                     href={`/uslugi/${service.slug.current}`}
+                    aria-label={`Czytaj więcej: ${service.title}`}
                     className="inline-flex items-center gap-2 text-blue-600 group-hover:text-white font-semibold text-sm hover:gap-3 transition-all duration-300"
                   >
                     <span>Czytaj więcej</span>
                     <MdArrowForwardIos size={12} />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );

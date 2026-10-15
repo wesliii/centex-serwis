@@ -1,4 +1,3 @@
-// app/polityka-prywatnosci/page.tsx
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Navbar from "../components/Navbar";
@@ -9,7 +8,9 @@ export const metadata: Metadata = {
   title: "Polityka prywatności",
   description:
     "Polityka prywatności i informacje o plikach cookies serwisu Centex Auto Serwis: zasady przetwarzania danych, podstawy prawne, odbiorcy i prawa użytkownika.",
-  alternates: { canonical: "https://centex-serwis.pl/polityka-prywatnosci" },
+  alternates: {
+    canonical: "https://www.centex-serwis.pl/polityka-prywatnosci",
+  },
 };
 
 const COMPANY = {
@@ -17,11 +18,11 @@ const COMPANY = {
   owner: "Kamil Cetnarowski",
   address: "ul. Biesiadna 9, 35-304 Rzeszów",
   nip: "8133957103",
-  phone: "+48 780 041 548",
-  phoneHref: "tel:+48780041548",
+  phone: "518 032 252",
+  phoneHref: "tel:+48518032252",
   email: "warsztat@centex.pl",
 };
-const LAST_UPDATED = "28 września 2026";
+const LAST_UPDATED = "2 października 2026";
 
 const linkClass = "text-blue-600 hover:underline";
 
@@ -33,8 +34,8 @@ const purposes = [
     "Do zakończenia korespondencji, nie dłużej niż 12 miesięcy. Jeśli dojdzie do zawarcia umowy: do przedawnienia roszczeń",
   ],
   [
-    "Zapewnienie działania i bezpieczeństwa serwisu",
-    "Adres IP i dane techniczne przeglądarki zapisywane w logach serwera",
+    "Zapewnienie działania i bezpieczeństwa serwisu, w tym ochrona formularza przed spamem (Cloudflare Turnstile)",
+    "Adres IP i dane techniczne przeglądarki zapisywane w logach serwera oraz przetwarzane przez Cloudflare przy weryfikacji formularza",
     "Art. 6 ust. 1 lit. f RODO (bezpieczeństwo i prawidłowe działanie strony)",
     "Zgodnie z okresem przechowywania logów u dostawcy hostingu",
   ],
@@ -80,7 +81,7 @@ const cookies = [
     "90 dni",
   ],
   [
-    "centex-cookie-consent-v1",
+    "cookie_consent",
     "Centex Auto Serwis",
     "Zapamiętanie wyboru dotyczącego cookies (localStorage, niebędące plikiem cookie)",
     "Do usunięcia przez użytkownika",
@@ -258,8 +259,22 @@ export default function PrivacyPolicyPage() {
                   .
                 </li>
                 <li>
-                  <strong className="text-gray-900">Vercel Inc.</strong>:
-                  hosting strony.
+                  <strong className="text-gray-900">Cloudflare, Inc.</strong>:
+                  hosting strony, sieć dostarczania treści (CDN) i ochrona przed
+                  atakami oraz usługa Cloudflare Turnstile, która sprawdza, czy
+                  formularz kontaktowy wypełnia człowiek. Skrypt Turnstile
+                  ładuje się dopiero po kliknięciu w pole formularza, a
+                  Cloudflare przetwarza wtedy m.in. adres IP i dane techniczne
+                  przeglądarki. Informacje:{" "}
+                  <a
+                    href="https://www.cloudflare.com/privacypolicy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={linkClass}
+                  >
+                    polityka prywatności Cloudflare
+                  </a>
+                  .
                 </li>
                 <li>
                   <strong className="text-gray-900">Resend</strong>:
@@ -299,7 +314,7 @@ export default function PrivacyPolicyPage() {
 
             <Section number={6} title="Przekazywanie danych poza EOG">
               <p>
-                Część dostawców (Google, Meta, Vercel, Resend) ma siedzibę w
+                Część dostawców (Google, Meta, Cloudflare, Resend) ma siedzibę w
                 Stanach Zjednoczonych lub przetwarza dane w USA. Przekazanie
                 odbywa się na podstawie decyzji Komisji Europejskiej
                 stwierdzającej odpowiedni stopień ochrony (EU-US Data Privacy
